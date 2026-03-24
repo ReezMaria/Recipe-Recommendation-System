@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recipe App - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* --- background / base --- */
+    body{
+      background-image: url("https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+nav {
+  background: rgba(0,0,0,0.85);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: all .2s;
+}
+
+nav a:hover {
+  background: rgba(255,165,0,0.95);
+  color: #000;
+  transform: translateY(-2px);
+}
+
+    /* ✅ Right-aligned sign out button */
+    .signout-btn {
+      margin-left: auto;
+      background: #ff4444;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    .signout-btn:hover {
+      background: #ff6666;
+      transform: translateY(-2px);
+    }
+
+    .overlay {
+      background: rgba(0,0,0,0.66);
+      padding: 60px 20px;
+      min-height: calc(100vh - 56px);
+      box-sizing: border-box;
+    }
+
+    h1.page-title {
+      text-align:center;
+      font-size:48px;
+      color:#ffcc00;
+      margin:0 0 36px 0;
+      text-shadow:2px 2px 6px rgba(0,0,0,0.8);
+    }
+
+    .cards {
+      max-width:1100px;
+      margin: 0 auto;
+      display:grid;
+      gap:28px;
+      grid-template-columns: 1fr;
+    }
+
+    .recipe-card {
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      padding:28px 34px;
+      border-radius:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(4px);
+      overflow:visible;
+    }
+
+    .recipe-title {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:26px;
+      color:#ffa500;
+      margin-bottom:12px;
+      font-weight:700;
+    }
+
+    .recipe-desc { color:#fff; font-size:16px; margin:6px 0 12px 0; line-height:1.55;}
+    .recipe-ingredients { color:#ffeab0; font-weight:600; margin-bottom:10px; }
+    .recipe-steps { color:#fff; margin:0 0 40px 0; }
+    .recipe-steps ol { padding-left:18px; margin:6px 0; }
+
+    .like-btn {
+      font-size:20px;
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+      cursor:pointer;
+      transition: transform .12s, background .12s, color .12s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .like-btn:active { transform: scale(.98); }
+
+    .like-btn.liked {
+      background: rgba(255,255,255,0.06);
+      color: #ff3b3b;
+      text-shadow: 0 0 12px rgba(255,59,59,0.45);
+    }
+
+    .like-count {
+      background: rgba(0,0,0,0.45);
+      color: #ffcc00;
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    @media (max-width:640px){
+      h1.page-title { font-size:34px; }
+      .recipe-card { padding:20px; border-radius:14px; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-links">
+    <a href="{{ url_for('aboutsite') }}">About</a>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('add_recipe') }}">Add Recipe</a>
+    <a href="{{ url_for('top_recipes') }}">Top 5 Recipes</a>
+    <a href="{{ url_for('search') }}">Search by Ingredient</a>
+  </div>
+
+  <!-- ✅ Sign Out button (top-right corner) -->
+  <form action="{{ url_for('signout') }}" method="post">
+    <button type="submit" class="signout-btn">Sign Out</button>
+  </form>
+</nav>
+
+
+  <div class="overlay">
+    <h1 class="page-title">All Recipes</h1>
+
+    <div class="cards">
+      {% if recipes %}
+        {% for recipe in recipes %}
+          <div class="recipe-card" data-id="{{ recipe.id }}" data-like-url="{{ recipe.like_url | default('') }}">
+            <div class="recipe-title">
+              <span>🍽</span>
+              <span>{{ recipe.name }}</span>
+            </div>
+
+            {% if recipe.description %}
+              <div class="recipe-desc"><strong>Description:</strong> {{ recipe.description }}</div>
+            {% endif %}
+
+            {% if recipe.ingredients %}
+            <div class="recipe-ingredients"><strong>Ingredients:</strong>
+              <ul>
+                {% for ing in recipe.ingredients %}
+                  <li>{{ ing.name }} - {{ ing.quantity }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+            {% if recipe.steps %}
+              <div class="recipe-steps">
+                <strong>Instructions:</strong>
+                <ol>
+                  {% for step in recipe.steps %}
+                    <li>{{ step }}</li>
+                  {% endfor %}
+                </ol>
+              </div>
+            {% endif %}
+
+            <button class="like-btn" data-recipe-id="{{ recipe.id }}">
+              <span class="heart">{{ '♥' if recipe.liked else '♡' }}</span>
+              <span class="like-count">{{ recipe.likes }} {{ 'Like' if recipe.likes == 1 else 'Likes' }}</span>
+            </button>
+
+          </div>
+        {% endfor %}
+      {% else %}
+        <p style="text-align:center; color:#ffe8a6; font-size:20px;">No recipes found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const recipeId = btn.dataset.recipeId;
+    const heart = btn.querySelector('.heart');
+    const countEl = btn.querySelector('.like-count');
+
+    fetch(`/like/${recipeId}`, { method: 'POST' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          heart.textContent = heart.textContent === '♡' ? '♥' : '♡';
+          countEl.textContent = data.likes + (data.likes === 1 ? ' Like' : ' Likes');
+        } else {
+          alert(data.message || 'Please log in to like recipes.');
+        }
+      })
+      .catch(err => console.error('Error:', err));
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>About Our Recipe Site</title>
+  <style>
+    body {
+      background-image: url("https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg"); /* Replace with your background image */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      color: white;
+    }
+    nav {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 10px 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    nav a:hover {
+      background-color: #ffa500;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 60px 30px;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    h1 {
+      text-align: center;
+      font-size: 48px;
+      color: #ffcc00;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px #000;
+    }
+    p {
+      font-size: 20px;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto 50px auto;
+      text-align: center;
+      color: #f0e68c;
+    }
+    .food-gallery {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .food-gallery img {
+      border-radius: 15px;
+      width: 280px;
+      height: 180px;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(255,165,0,0.7);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .food-gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255,165,0,1);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+        <a href="{{ url_for('aboutsite') }}">About</a>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('add_recipe') }}">Add Recipe</a>
+        <a href="{{ url_for('top_recipes') }}">Top 5 Recipes</a>
+        <a href="{{ url_for('search') }}">Search by Ingredient</a>
+    </nav>
+    
+
+  <div class="overlay">
+    <h1>About Our Recipe Site</h1>
+    <p>
+     Welcome to CookSmart, an intelligent recipe recommendation system designed to make cooking easier and more enjoyable. 
+It allows users to explore, search, and manage a variety of recipes, providing step-by-step instructions, ingredient lists, and personalized suggestions. 
+With features like “Top Recipes” and favorites tracking, CookSmart helps both novice and experienced cooks discover new dishes, plan meals efficiently, and share their culinary creations effortlessly.
+    </p>
+
+    <div class="food-gallery">
+      <img src="https://img.freepik.com/premium-photo/photo-realistic-hyperbole-image-delicious-pasta_961875-11058.jpg" alt="Delicious Pasta">
+      <img src="https://static01.nyt.com/images/2022/07/15/dining/MC-Chopped-Salad-15SALADREX/merlin_209652387_1b5eee4c-9da5-443c-90e0-db20ee51a246-threeByTwoMediumAt2X.jpg" alt="Fresh Salad">
+      <img src="https://thumbs.dreamstime.com/b/tasty-burgers-wooden-table-close-up-home-made-137250149.jpg" alt="Tasty Burger">
+      <img src="https://tasteoffrancemag.com/wp-content/uploads/2023/01/shutterstock_2122346009-scaled.jpg" alt="Chocolate Dessert">
+    </div>
+  </div>
+</body>
+</html>

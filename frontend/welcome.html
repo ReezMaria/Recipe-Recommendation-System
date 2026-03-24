@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Recipe App</title>
+  <style>
+    body {
+      background-image: url("https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: white;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      height: 100vh;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 60px 20px;
+      box-sizing: border-box;
+      text-align: center;
+      z-index: 1; /* Keeps overlay behind the button */
+    }
+    .top-bar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 2; /* Makes the button clickable */
+    }
+    .signin-btn {
+      padding: 10px 20px;
+      background-color: #ff9900;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .signin-btn:hover { background-color: #ffa733; }
+    h1 { font-size: 60px; margin-bottom: 20px; color: #ffcc00; }
+    h3 { font-size: 28px; margin-bottom: 40px; font-weight: 300; }
+    p { font-size: 20px; max-width: 800px; margin: 0 auto 40px auto; line-height: 1.6; }
+    .nav-links a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 25px;
+      background-color: #ff9900;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+    .nav-links a:hover { background-color: #ffa733; }
+  </style>
+</head>
+<body>
+  <!-- Top Right Signin Button -->
+  <div class="top-bar">
+    <a href="{{ url_for('signin') }}" class="signin-btn">Sign In / Sign Up</a>
+  </div>
+
+  <div class="overlay">
+    <h1>Welcome to CookSmart</h1>
+    <h3>Discover, Share & Cook Delicious Recipes</h3>
+    <p>
+      Love cooking? This is your go-to space to find new recipes, share your own dishes, and explore a world of flavors.
+      From traditional meals to modern snacks, there's something for every food lover.
+    </p>
+    <div class="nav-links">
+      <a href="{{ url_for('aboutsite') }}">About</a>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('add_recipe') }}">Add Recipe</a>
+      <a href="{{ url_for('top_recipes') }}">Top 5 Recipes</a>
+      <a href="{{ url_for('search') }}">Search by Ingredient</a>
+    </div>
+  </div>
+</body>
+</html>

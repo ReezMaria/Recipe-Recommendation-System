@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Recipes</title>
+  <style>
+    body {
+      background-image: url("https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: white;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      width: 100%;
+      padding: 80px 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #ffcc00;
+      margin-bottom: 30px;
+    }
+
+    form.search-box {
+      background-color: rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 22px;
+      border-radius: 14px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+      margin-bottom: 40px;
+    }
+
+    select, input[type="text"] {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #ff9900;
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover { background-color: #ffa733; }
+
+    /* results cards */
+    .results {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background-color: rgba(255,255,255,0.06);
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.04);
+      text-align: left;
+    }
+
+    .card h2 {
+      color: #ffa500;
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .meta {
+      color: #ffeb99;
+      font-weight:700;
+      margin-bottom: 8px;
+    }
+
+    .desc, .ings {
+      color: #fff;
+      line-height: 1.6;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .no-results {
+      color: #ffe8a6;
+      font-size: 20px;
+      margin-top: 30px;
+    }
+
+    .back {
+      display:inline-block;
+      margin-top: 30px;
+      background-color: #ff9900;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+    }
+    .back:hover { background-color:#ffa733; }
+
+    @media (min-width:700px){
+      .results { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>Search Recipes</h1>
+
+    <!-- search form: search_by selects whether to search by ingredient or name -->
+    <form class="search-box" method="POST" action="">
+      <select name="search_by" aria-label="Search by">
+        <option value="ingredient" {% if request.form.get('search_by') == 'ingredient' %}selected{% endif %}>Ingredient</option>
+        <option value="name" {% if request.form.get('search_by') == 'name' %}selected{% endif %}>Recipe Name</option>
+      </select>
+
+      <input type="text" name="ingredient" placeholder="Enter ingredient or recipe name" value="{{ request.form.get('ingredient','') }}" required>
+
+      <button type="submit">Search</button>
+    </form>
+
+    {% if recipes is defined and recipes %}
+      <div class="results">
+        {% for r in recipes %}
+  <div class="card">
+    <h2>🍽 {{ r.name }}</h2>
+
+    <div class="meta">
+      <strong>ID:</strong> {{ r.id }}
+    </div>
+
+    <div class="desc">
+      <strong>Description:</strong>
+      {{ r.description }}
+    </div>
+
+    <div class="ings">
+      <strong>Ingredients:</strong>
+      {{ r.ingredients }}
+    </div>
+
+    <div class="inst">
+      <strong>Instructions:</strong><br>
+      <pre style="white-space: pre-wrap; color: #fff;">{{ r.instructions }}</pre>
+    </div>
+  </div>
+{% endfor %}
+      </div>
+
+    {% elif recipes is defined %}
+      <div class="no-results">No matching recipes found.</div>
+    {% endif %}
+
+    <a class="back" href="{{ url_for('index') }}">Back to Home</a>
+  </div>
+</body>
+</html>

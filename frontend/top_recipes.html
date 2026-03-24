@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Top 5 Recipes</title>
+  <style>
+    body {
+      background-image: url("https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 10px 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #ffa500;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 60px 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 48px;
+      color: #ffcc00;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    .recipe-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      margin: 20px auto;
+      padding: 25px 30px;
+      border-radius: 15px;
+      max-width: 900px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+      position: relative;
+      text-align: left;
+    }
+
+    .recipe-name {
+      color: #ffa500;
+      font-size: 28px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .description {
+      font-size: 18px;
+      color: #ffeb99;
+      margin-bottom: 15px;
+    }
+
+    .ingredients-title,
+    .instructions-title {
+      color: #ffcc00;
+      font-size: 20px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      text-decoration: underline;
+    }
+
+    .ingredient-list {
+      margin-left: 20px;
+      font-size: 17px;
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+
+    .instructions {
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 15px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .likes {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 18px;
+      color: #ffcc00;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .no-data {
+      text-align: center;
+      font-size: 22px;
+      margin-top: 50px;
+      color: #ffcc00;
+    }
+
+    hr {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 25px 0;
+    }
+
+  </style>
+</head>
+<body>
+<nav>
+    <a href="{{ url_for('aboutsite') }}">About</a>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('add_recipe') }}">Add Recipe</a>
+    <a href="{{ url_for('top_recipes') }}">Top 5 Recipes</a>
+    <a href="{{ url_for('search') }}">Search Recipe</a>
+</nav>
+
+<div class="overlay">
+  <h1>Top 5 Recipes</h1>
+
+  {% if top5 %}
+    {% for r in top5 %}
+      <div class="recipe-card">
+        <div class="recipe-name">🍽 {{ r[0] }}</div>
+        <div class="likes">❤ {{ r[1] }} Likes</div>
+
+        <div class="description">{{ r[2] }}</div>
+
+        <div class="ingredients-title">🧂 Ingredients:</div>
+<ul class="ingredient-list">
+  {% for ing, qty in r[3] %}
+    <li>{{ ing }}  {{ qty }}</li>
+  {% endfor %}
+</ul>
+
+<div class="instructions-title">👨‍🍳 Instructions:</div>
+<div class="instructions">{{ r[4] | replace('\\n', '<br>') | safe }}</div>
+
+      </div>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <p class="no-data">No data available.</p>
+  {% endif %}
+</div>
+</body>
+</html>
